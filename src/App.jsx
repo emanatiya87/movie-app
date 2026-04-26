@@ -11,6 +11,8 @@ const Movies = lazy(() => import("./pages/movies"));
 const Layout = lazy(() => import("./pages/layout"));
 const EditForm = lazy(() => import("./pages/EditForm"));
 const Favourite = lazy(() => import("./pages/favourite"));
+const RegistrationForm = lazy(() => import("./pages/registrationForm"));
+const LoginForm = lazy(() => import("./pages/login"));
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MovieContextProvider from "./context/movieContextProvider";
@@ -25,6 +27,8 @@ function App() {
         { path: "contact", element: <Slider /> },
         { path: "favourites", element: <Favourite /> },
         { path: "movies", element: <Movies /> },
+        { path: "registration", element: <RegistrationForm /> },
+        { path: "login", element: <LoginForm /> },
         { path: "movies/:id", element: <MovieDetails /> },
         { path: "edit/:id", element: <EditForm /> },
       ],

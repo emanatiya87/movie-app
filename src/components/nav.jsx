@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { FaSearchengin } from "react-icons/fa";
 import { useSelector } from "react-redux";
 export default function NavComponent() {
@@ -54,8 +54,15 @@ export default function NavComponent() {
           <div className="right-actions d-flex justify-content-center justify-content-lg-end gap-3 mt-3 mt-lg-0">
             <button className="search-btn">
               <FaSearchengin />
+              {/* todo:en/ar */}
             </button>
-            <button className="login-btn">Langauge</button>
+            <Link to="/registration">
+              {" "}
+              <button className="login-btn">Sign up</button>
+            </Link>{" "}
+            <Link to="/login">
+              <button className="login-btn">login</button>
+            </Link>
           </div>
         </div>
       </div>
