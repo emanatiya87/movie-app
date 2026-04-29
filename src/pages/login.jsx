@@ -9,6 +9,7 @@ import {
   FormLabel,
   Checkbox,
   Button,
+  Link,
   Typography,
 } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -75,6 +76,24 @@ export default function LoginForm() {
         <Button variant="contained" sx={{ mt: 3, fontWeight: "bold" }}>
           Login
         </Button>
+        <Box sx={{ mt: 3, textAlign: "center" }}>
+          <Typography variant="body2" sx={{ color: "#f8f9fa" }}>
+            Don't have an account?{" "}
+            <Link
+              href="/registration"
+              sx={{
+                color: "#fff397",
+                textDecoration: "underline",
+                cursor: "pointer",
+                "&:hover": {
+                  color: "#fff",
+                },
+              }}
+            >
+              Sign up
+            </Link>
+          </Typography>
+        </Box>
       </Box>
     </ThemeProvider>
   );

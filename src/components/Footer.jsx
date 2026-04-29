@@ -1,61 +1,103 @@
 import React from "react";
-import { FaFacebook } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { FaPinterest } from "react-icons/fa";
+import { styled } from "@mui/system";
+import {
+  Typography,
+  Container,
+  Grid,
+  Link,
+  IconButton,
+  Stack,
+} from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+
+const FooterWrapper = styled("footer")({
+  color: "#888",
+  padding: "48px 0",
+  borderTop: "1px solid #333",
+  marginTop: "40px",
+});
+
+const FooterTitle = styled(Typography)({
+  color: "#fff397",
+  fontWeight: "bold",
+  marginBottom: "16px",
+});
+
+const SectionTitle = styled(Typography)({
+  color: "#fff",
+  fontWeight: "bold",
+  marginBottom: "16px",
+});
+
+const FooterLink = styled(Link)({
+  display: "block",
+  marginBottom: "8px",
+  color: "inherit",
+  textDecoration: "none",
+  "&:hover": {
+    color: "#fff",
+  },
+});
+
+const BottomBar = styled("div")({
+  marginTop: "40px",
+  paddingTop: "24px",
+  borderTop: "1px solid #222",
+  textAlign: "center",
+});
 
 export default function Footer() {
   return (
-    <footer className=" text-white pt-5 pb-3">
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4 mb-4">
-            <h5 className="fw-bold logo">CINESTREAM</h5>
-            <p className="text-light small mt-3">
-              A film production company that specializes in creating visually
-              stunning and impactful content.
-            </p>
+    <FooterWrapper>
+      <Container>
+        <Grid container spacing={4} justifyContent="space-between">
+          <Grid item xs={12} md={4}>
+            <FooterTitle variant="h6">CINESTREAM</FooterTitle>
 
-            <div className="d-flex gap-3 mt-3">
-              <FaFacebook />
-              <FaTwitter />
-              <FaPinterest />
-            </div>
-          </div>
+            <Typography variant="body2">
+              The world's best movie database and streaming guide. Discover your
+              next favorite story.
+            </Typography>
 
-          <div className="col-md-2 mb-4">
-            <h6 className="fw-bold mb-3">MENU</h6>
-            <ul className="list-unstyled">
-              <li className="mb-2">Help</li>
-              <li className="mb-2">Services</li>
-              <li className="mb-2">Company</li>
-            </ul>
-          </div>
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+              <IconButton sx={{ color: "#888" }}>
+                <TwitterIcon />
+              </IconButton>
+              <IconButton sx={{ color: "#888" }}>
+                <InstagramIcon />
+              </IconButton>
+              <IconButton sx={{ color: "#888" }}>
+                <GitHubIcon />
+              </IconButton>
+            </Stack>
+          </Grid>
 
-          <div className="col-md-3 mb-4">
-            <h6 className="fw-bold mb-3">BUSINESS</h6>
-            <ul className="list-unstyled">
-              <li className="mb-2">Movie</li>
-              <li className="mb-2">Web Series</li>
-              <li className="mb-2">Pay TV</li>
-            </ul>
-          </div>
+          <Grid item xs={6} md={2}>
+            <SectionTitle variant="subtitle1">Explore</SectionTitle>
 
-          <div className="col-md-3 mb-4">
-            <h6 className="fw-bold mb-3">INVESTORS</h6>
-            <ul className="list-unstyled">
-              <li className="mb-2">Annual Report</li>
-              <li className="mb-2">Stocks</li>
-              <li className="mb-2">Financial</li>
-            </ul>
-          </div>
-        </div>
+            <FooterLink href="#">Top Rated</FooterLink>
+            <FooterLink href="#">Coming Soon</FooterLink>
+            <FooterLink href="#">Trailers</FooterLink>
+          </Grid>
 
-        <hr className="border-secondary" />
+          <Grid item xs={6} md={2}>
+            <SectionTitle variant="subtitle1">Help</SectionTitle>
 
-        <div className="text-center small text-muted">
-          © 2026 Copyright - by Eman
-        </div>
-      </div>
-    </footer>
+            <FooterLink href="#">Account</FooterLink>
+            <FooterLink href="#">Support Center</FooterLink>
+            <FooterLink href="#">Privacy Policy</FooterLink>
+          </Grid>
+        </Grid>
+
+        <BottomBar>
+          <Typography variant="caption">
+            © {new Date().getFullYear()} CINESTREAM. All rights reserved by
+            Eman.
+          </Typography>
+        </BottomBar>
+      </Container>
+    </FooterWrapper>
   );
 }

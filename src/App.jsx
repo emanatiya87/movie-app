@@ -13,7 +13,8 @@ const EditForm = lazy(() => import("./pages/EditForm"));
 const Favourite = lazy(() => import("./pages/favourite"));
 const RegistrationForm = lazy(() => import("./pages/registrationForm"));
 const LoginForm = lazy(() => import("./pages/login"));
-
+const About = lazy(() => import("./pages/about"));
+import { Box } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MovieContextProvider from "./context/movieContextProvider";
 function App() {
@@ -27,6 +28,7 @@ function App() {
         { path: "contact", element: <Slider /> },
         { path: "favourites", element: <Favourite /> },
         { path: "movies", element: <Movies /> },
+        { path: "about", element: <About /> },
         { path: "registration", element: <RegistrationForm /> },
         { path: "login", element: <LoginForm /> },
         { path: "movies/:id", element: <MovieDetails /> },
@@ -37,13 +39,20 @@ function App() {
     { path: "*", element: <NotFound /> },
   ]);
   return (
-    <div>
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "#0d0f11",
+        color: "#fff",
+        minHeight: "100vh",
+      }}
+    >
       <MovieContextProvider>
         <Suspense fallback={<Loader />}>
           <RouterProvider router={router}></RouterProvider>
         </Suspense>
       </MovieContextProvider>
-    </div>
+    </Box>
   );
 }
 

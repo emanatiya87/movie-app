@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, Link } from "react-router-dom";
 import { FaSearchengin } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 export default function NavComponent() {
   const { favorites } = useSelector((state) => state.movies);
 
@@ -32,6 +33,11 @@ export default function NavComponent() {
               </NavLink>
             </li>
             <li>
+              <NavLink to="/about" className="nav-link-item">
+                About us
+              </NavLink>
+            </li>
+            <li>
               <NavLink to="/movies" className="nav-link-item">
                 Movies
               </NavLink>
@@ -56,13 +62,15 @@ export default function NavComponent() {
               <FaSearchengin />
               {/* todo:en/ar */}
             </button>
-            <Link to="/registration">
-              {" "}
-              <button className="login-btn">Sign up</button>
-            </Link>{" "}
             <Link to="/login">
-              <button className="login-btn">login</button>
-            </Link>
+              {" "}
+              <Button
+                variant="contained"
+                sx={{ bgcolor: "#fff397", color: "#000", fontWeight: "bold" }}
+              >
+                Join Now
+              </Button>
+            </Link>{" "}
           </div>
         </div>
       </div>
