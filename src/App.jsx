@@ -16,8 +16,15 @@ const LoginForm = lazy(() => import("./pages/login"));
 const About = lazy(() => import("./pages/about"));
 import { Box } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MovieContextProvider from "./context/movieContextProvider";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchData } from "./redux/slices/moviesSlice";
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -47,11 +54,9 @@ function App() {
         minHeight: "100vh",
       }}
     >
-      <MovieContextProvider>
-        <Suspense fallback={<Loader />}>
-          <RouterProvider router={router}></RouterProvider>
-        </Suspense>
-      </MovieContextProvider>
+      <Suspense fallback={<Loader />}>
+        <RouterProvider router={router}></RouterProvider>
+      </Suspense>
     </Box>
   );
 }

@@ -12,11 +12,10 @@ import "./slider3D.css";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
-import { useContext } from "react";
-import { MovieContext } from "../context/movieContextProvider";
+import { useSelector } from "react-redux";
 
 export default function Slider3D() {
-  const { movies } = useContext(MovieContext);
+  const movies = useSelector((state) => state.movies.movies);
   const selectedMovies = movies.slice(6, 12);
   const imgPath = "https://image.tmdb.org/t/p/w500/";
   const swiperRef = useRef(null);

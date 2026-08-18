@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Toast from "../components/toast";
-import { useContext } from "react";
-import { MovieContext } from "../context/movieContextProvider";
 import { useNavigate } from "react-router-dom";
-export default function AddMovie() {
-  const navigator = useNavigate();
+import { useDispatch } from "react-redux";
+import { addMovie } from "../redux/slices/moviesSlice";
 
-  const { setMovies } = useContext(MovieContext);
+export default function AddMovie() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     vote_average: "",
@@ -23,19 +22,14 @@ export default function AddMovie() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newMovie = {
-      id: Date.now(),
-      ...formData,
-    };
-
-    axios
-      .post("http://localhost:3000/results", newMovie)
-      .then((response) => {
-        setMovies((prev) => [...prev, response.data]); // ✔ important
-
+    dispatch(addMovie(formData))
+      .unwrap()
+      .then(() => {
         setFormData({
           title: "",
           vote_average: "",
@@ -46,7 +40,7 @@ export default function AddMovie() {
           release_date: "",
         });
         setTimeout(() => {
-          navigator("/movies");
+          navigate("/movies");
         }, 1000);
       })
       .catch((error) => console.log(error));

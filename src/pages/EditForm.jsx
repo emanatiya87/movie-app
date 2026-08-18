@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { MovieContext } from "../context/movieContextProvider";
+import { useDispatch } from "react-redux";
+import { editMovie } from "../redux/slices/moviesSlice";
+import { useSelector } from "react-redux";
+
 export default function EditForm() {
   const navigate = useNavigate();
   const formatForInput = (date) => {
@@ -15,7 +16,7 @@ export default function EditForm() {
     return date;
   };
   const { id } = useParams();
-  const { movies, setMovies } = useContext(MovieContext);
+  const movies = useSelector((state) => state.movies.movies);
   const movie = movies?.find((m) => m.id == id);
   const [formData, setFormData] = useState({
     title: movie.title,
@@ -27,27 +28,26 @@ export default function EditForm() {
     release_date: formatForInput(movie?.release_date),
   });
 
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const updatedMovie = {
-      ...formData,
-    };
-
-    axios
-      .put(`http://localhost:3000/results/${id}`, updatedMovie)
-      .then((response) => {
-        setMovies((prev) => prev.map((m) => (m.id == id ? response.data : m)));
+    dispatch(editMovie({ id, updatedMovie: formData }))
+      .unwrap()
+      .then(() => {
         setTimeout(() => {
           navigate(`/movies/${id}`);
         }, 2000);
       })
       .catch((error) => console.log(error));
   };
+
   if (!movie) {
     return <div>Loading...</div>;
   }

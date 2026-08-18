@@ -1,5 +1,4 @@
 import React from "react";
-import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Loader from "./loader";
@@ -15,12 +14,14 @@ import {
   Pencil,
 } from "lucide-react";
 import { addToFav } from "../redux/slices/moviesSlice";
-import { MovieContext } from "../context/movieContextProvider";
+import { useSelector } from "react-redux";
+
 export default function MovieDetails() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const imgPath = "https://image.tmdb.org/t/p/w500/";
-  const { movies, loading } = useContext(MovieContext);
+  const movies = useSelector((state) => state.movies.movies);
+  const loading = useSelector((state) => state.movies.loading);
   const movie = movies.find((m) => m.id == id);
   if (loading) {
     return <Loader />;
