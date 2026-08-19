@@ -4,7 +4,9 @@ import { FaSearchengin } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Button, TextField, InputAdornment, IconButton } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import { Avatar, Menu, MenuItem } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../redux/slices/authSlice";
 const theme = createTheme({
   palette: {
     primary: {
@@ -26,6 +28,18 @@ const whiteInputStyle = {
 
 export default function NavComponent() {
   const { favorites } = useSelector((state) => state.movies);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const firstName =
+    user?.user_metadata?.full_name?.split(" ")[0] || user?.email;
+  const avatarLetter = firstName?.charAt(0).toUpperCase();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    setAnchorEl(null);
+  };
   const navigate = useNavigate();
 
   const [searchOpen, setSearchOpen] = useState(false);
@@ -132,14 +146,42 @@ export default function NavComponent() {
                 </button>
               )}
 
-              <Link to="/login">
-                <Button
-                  variant="contained"
-                  sx={{ bgcolor: "#fff397", color: "#000", fontWeight: "bold" }}
-                >
-                  Join Now
-                </Button>
-              </Link>
+              {user ? (
+                <>
+                  <Avatar
+                    sx={{
+                      bgcolor: "#fff397",
+                      color: "#000",
+                      cursor: "pointer",
+                      fontWeight: "bold",
+                    }}
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
+                  >
+                    {avatarLetter}
+                  </Avatar>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={() => setAnchorEl(null)}
+                  >
+                    <MenuItem disabled>{firstName}</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <Link to="/login">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#fff397",
+                      color: "#000",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Join Now
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>

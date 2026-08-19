@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../redux/slices/authSlice";
 import {
   Box,
   TextField,
@@ -35,7 +38,19 @@ export default function LoginForm() {
 
     "& .MuiInput-input": { color: "#f8f9fa" },
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(loginUser({ email, password }))
+      .unwrap()
+      .then(() => navigate("/"))
+      .catch((err) => console.log(err));
+  };
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -55,27 +70,38 @@ export default function LoginForm() {
         >
           Login
         </Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            variant="standard"
+            sx={{ ...whiteInputStyle, mt: 2 }}
+            inputlabelprops={{ style: { color: "#f8f9fa" } }}
+          />
+          <TextField
+            fullWidth
+            label="Password"
+            type="password"
+            variant="standard"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            sx={{ ...whiteInputStyle, mt: 2 }}
+            inputlabelprops={{ style: { color: "#f8f9fa" } }}
+          />
 
-        <TextField
-          fullWidth
-          label="Email"
-          type="email"
-          variant="standard"
-          sx={{ ...whiteInputStyle, mt: 2 }}
-          inputlabelprops={{ style: { color: "#f8f9fa" } }}
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          variant="standard"
-          sx={{ ...whiteInputStyle, mt: 2 }}
-          inputlabelprops={{ style: { color: "#f8f9fa" } }}
-        />
-
-        <Button variant="contained" sx={{ mt: 3, fontWeight: "bold" }}>
-          Login
-        </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={loading}
+            sx={{ mt: 3, fontWeight: "bold" }}
+          >
+            Login
+          </Button>
+          {error && <Typography color="error">{error}</Typography>}
+        </form>
         <Box sx={{ mt: 3, textAlign: "center" }}>
           <Typography variant="body2" sx={{ color: "#f8f9fa" }}>
             Don't have an account?{" "}

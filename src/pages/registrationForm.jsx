@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../redux/slices/authSlice";
 import {
   Box,
   TextField,
@@ -35,6 +38,20 @@ export default function RegistrationForm() {
 
     "& .MuiInput-input": { color: "#f8f9fa" },
   };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(registerUser({ name, email, password, gender }))
+      .unwrap()
+      .then(() => navigate("/"))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -55,59 +72,77 @@ export default function RegistrationForm() {
         >
           Registration
         </Typography>
-
-        <TextField
-          fullWidth
-          label="Name"
-          variant="standard"
-          sx={whiteInputStyle}
-          inputlabelprops={{ style: { color: "#f8f9fa" } }}
-        />
-        <TextField
-          fullWidth
-          label="Email"
-          type="email"
-          variant="standard"
-          sx={{ ...whiteInputStyle, mt: 2 }}
-          inputlabelprops={{ style: { color: "#f8f9fa" } }}
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          type="password"
-          variant="standard"
-          sx={{ ...whiteInputStyle, mt: 2 }}
-          inputlabelprops={{ style: { color: "#f8f9fa" } }}
-        />
-        <FormControl sx={{ mt: 3 }}>
-          <FormLabel sx={{ color: "#f8f9fa" }}>Gender</FormLabel>
-          <RadioGroup row>
-            <FormControlLabel
-              value="male"
-              control={<Radio sx={{ color: "#f8f9fa" }} />}
-              label="Male"
-              sx={{ color: "#f8f9fa" }}
-            />
-            <FormControlLabel
-              value="female"
-              control={<Radio sx={{ color: "#f8f9fa" }} />}
-              label="Female"
-              sx={{ color: "#f8f9fa" }}
-            />
-          </RadioGroup>
-        </FormControl>
-
-        <Box sx={{ mt: 2 }}>
-          <FormControlLabel
-            control={<Checkbox sx={{ color: "#f8f9fa" }} />}
-            label="I agree to the terms and conditions"
-            sx={{ color: "#f8f9fa" }}
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Name"
+            variant="standard"
+            sx={whiteInputStyle}
+            inputlabelprops={{ style: { color: "#f8f9fa" } }}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
-        </Box>
+          <TextField
+            fullWidth
+            label="Email"
+            type="email"
+            variant="standard"
+            sx={{ ...whiteInputStyle, mt: 2 }}
+            inputlabelprops={{ style: { color: "#f8f9fa" } }}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            label="Password"
+            type="password"
+            variant="standard"
+            sx={{ ...whiteInputStyle, mt: 2 }}
+            inputlabelprops={{ style: { color: "#f8f9fa" } }}
+          />
+          <FormControl sx={{ mt: 3 }}>
+            <FormLabel sx={{ color: "#f8f9fa" }}>Gender</FormLabel>
+            <RadioGroup
+              row
+              name="gender"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+            >
+              <FormControlLabel
+                value="male"
+                control={<Radio sx={{ color: "#f8f9fa" }} />}
+                label="Male"
+                sx={{ color: "#f8f9fa" }}
+              />
+              <FormControlLabel
+                value="female"
+                control={<Radio sx={{ color: "#f8f9fa" }} />}
+                label="Female"
+                sx={{ color: "#f8f9fa" }}
+              />
+            </RadioGroup>
+          </FormControl>
 
-        <Button variant="contained" sx={{ mt: 3, fontWeight: "bold" }}>
-          sign up
-        </Button>
+          <Box sx={{ mt: 2 }}>
+            <FormControlLabel
+              control={<Checkbox sx={{ color: "#f8f9fa" }} />}
+              label="I agree to the terms and conditions"
+              sx={{ color: "#f8f9fa" }}
+            />
+          </Box>
+
+          <Button
+            variant="contained"
+            sx={{ mt: 3, fontWeight: "bold" }}
+            type="submit"
+            disabled={loading}
+          >
+            sign up
+          </Button>
+        </form>
+        {error && <Typography color="error">{error}</Typography>}
         <Box sx={{ mt: 3, textAlign: "center" }}>
           <Typography variant="body2" sx={{ color: "#f8f9fa" }}>
             Already have an account?{" "}

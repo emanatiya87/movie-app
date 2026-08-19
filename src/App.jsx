@@ -18,12 +18,26 @@ import { Box } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { supabase } from "./api/supabaseClient";
+import { setUser } from "./redux/slices/authSlice";
+
 import { fetchData } from "./redux/slices/moviesSlice";
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchData());
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      dispatch(setUser(session?.user ?? null));
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        dispatch(setUser(session?.user ?? null));
+      },
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, [dispatch]);
   const router = createBrowserRouter([
     {
